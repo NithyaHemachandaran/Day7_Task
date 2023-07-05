@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <title>XMLHttpRequest Example</title>
+  </head>
+  <body>
+    <script>
+    //Create a new XMLHttpRequest object
+      var xhr = new XMLHttpRequest();
+      var method = "GET";
+      var url = "https://restcountries.com/v3.1/all";
+      //Open the request
+      xhr.open(method, url);
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+        var result = JSON.parse(xhr.responseText);
+        console.log(result);
+     
+    //a.Get all the countries from Asia continent /region using Filter function
+    var continent=result.filter((ele)=>ele.continents=="Asia");
+    console.log(continent);
+    var region=result.filter((ele)=>ele.region=="Asia");
+    console.log(region);
+
+    //b.Get all the countries with a population of less than 2 lakhs using Filter function
+    var res = result.filter((ele)=>ele.population<200000);
+    console.log(res);
+
+    //c.Print the following details name, capital, flag using forEach function
+    var details=result.forEach((element) => { console.log(`${element.name.common},${element.capital},${element.flag}`)        
+    });
+
+     //d.Print the total population of countries using reduce function
+     var totalPopulation=result.reduce((acc,element)=>acc + element.population,0);
+     console.log("Total population in given data: ",totalPopulation);
+
+     //e.Print the country which uses US Dollars as currency.
+     const currency = result.filter((item) => item?.currencies?.USD).map((value) => value.name.common);
+     console.log('Countries Name use USD in given data: ', currency);
+
+    
+        } else {
+          //Request failed
+          console.log("Request failed", xhr.status);
+        }
+      };
+
+      //send the request
+      xhr.send();
+    </script>
+  </body>
+</html>
+
